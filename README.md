@@ -40,4 +40,6 @@ node scripts/preview.mjs
 
 ## 版式参考
 
-页面参考了 [OmniH2O](https://omni.human2humanoid.com/)、[HumanPlus](https://humanoid-ai.github.io/)、[Human2Humanoid](https://human2humanoid.com/)、[TWIST2](https://yanjieze.com/projects/TWIST2/)、[Diffusion Policy](https://diffusion-policy.cs.columbia.edu/) 和 [Robot Parkour Learning](https://robot-parkour.github.io/) 的标题、作者、视频展示和方法图布局。页面实现为本仓库独立编写，研究图像和演示均取自本项目。
+完整项目视频放在作者、机构和资源链接之后。网页采用视频中的深灰蓝和铜棕色，数据表与视频章节默认收起。完整视频封面取自第 35.5 秒的跟踪演示。
+
+页面参考了 [BeyondMimic](https://beyondmimic.github.io/)、[LucidSim](https://lucidsim.github.io/)、[OmniH2O](https://omni.human2humanoid.com/)、[HumanPlus](https://humanoid-ai.github.io/)、[Human2Humanoid](https://human2humanoid.com/)、[TWIST2](https://yanjieze.com/projects/TWIST2/)、[Diffusion Policy](https://diffusion-policy.cs.columbia.edu/) 和 [Robot Parkour Learning](https://robot-parkour.github.io/) 的标题、作者、视频展示和方法图布局。页面实现为本仓库独立编写，研究图像和演示均取自本项目。

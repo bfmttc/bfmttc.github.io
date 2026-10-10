@@ -116,6 +116,11 @@ for (const video of comparisons) {
 }
 
 const film = document.getElementById('overview-film');
+const filmPlayButton = document.getElementById('play-film');
+filmPlayButton.addEventListener('click', async () => {
+  try { await film.play(); } catch { film.focus(); }
+});
+film.addEventListener('play', () => { filmPlayButton.hidden = true; });
 const chapters = [...document.querySelectorAll('[data-time]')];
 for (const button of chapters) {
   button.addEventListener('click', async () => {

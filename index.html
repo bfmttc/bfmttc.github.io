@@ -1,122 +1,327 @@
 <!DOCTYPE html>
-
 <html lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<meta content="#ffffff" name="theme-color"/>
-<meta content="Test-Time Command Optimization improves motion execution in humanoid behavior foundation models without retraining. Explore the method, results, and real-robot demonstrations." name="description"/>
-<meta content="website" property="og:type"/>
-<meta content="Test-Time Compute for Humanoid Behavior Foundation Models" property="og:title"/>
-<meta content="Optimize motion commands, allocate test-time compute, and reuse demonstrations across humanoid behavior foundation models." property="og:description"/>
-<meta content="https://bfmttc.github.io/" property="og:url"/>
-<meta content="https://bfmttc.github.io/assets/images/tracking-poster.webp" property="og:image"/>
-<meta content="summary_large_image" name="twitter:card"/>
-<link href="https://bfmttc.github.io/" rel="canonical"/>
-<link href="assets/favicon.svg" rel="icon" type="image/svg+xml"/>
-<link href="styles.css" rel="stylesheet"/>
-<script defer="" src="site.js"></script>
-<title>Test-Time Compute for Humanoid Behavior Foundation Models</title>
-</head>
-<body>
-<a class="skip-link" href="#main">Skip to content</a>
-<header class="site-header">
-<div class="nav-shell">
-<a aria-label="BFM test-time compute, home" class="wordmark" href="#main">
-
-        BFM <span>/</span> TTC
-      </a>
-<nav aria-label="Page sections"><a href="#method">Method</a><a href="#results">Tracking</a><a href="#demos">Demos</a><a href="#film">Video</a></nav>
-
-</div>
-</header>
-<main id="main">
-<section aria-labelledby="paper-title" class="hero container">
-
-<h1 id="paper-title"><span>Test-Time Compute</span> for Humanoid<br class="desktop-break"/> Behavior Foundation Models</h1>
-
-<div aria-label="Authors" class="authors"><span>Weiji Xie<sup>1,2,†</sup></span><span>Junsong Wu<sup>1,2,†</sup></span><span>Zibo Zhou<sup>1,2</sup></span><span>Yueru Chen<sup>1,2</sup></span><span>Xingyi Wang<sup>3</sup></span><span>Zhenhua Xiong<sup>2</sup></span><span>Weinan Zhang<sup>2</sup></span><span>Chenjia Bai<sup>1,4,*</sup></span></div>
-<div aria-label="Affiliations" class="affiliations"><span><sup>1</sup> Institute of Artificial Intelligence (TeleAI), China Telecom</span><span><sup>2</sup> Shanghai Jiaotong University</span><span><sup>3</sup> Zhejiang University</span><span><sup>4</sup> Gamma Robotics</span></div>
-<p class="contributions">† Equal contribution <span>·</span> * Corresponding author</p>
-<div aria-label="Project resources" class="resource-links">
-<a aria-disabled="true" class="resource-link" data-resource="paper" role="link" title="PDF link to be added"><svg aria-hidden="true" viewbox="0 0 20 20"><path d="M5 2h7l4 4v12H5zM12 2v5h4M8 11h5M8 14h5"></path></svg>Paper</a>
-<a aria-disabled="true" class="resource-link" data-resource="arxiv" role="link" title="arXiv link to be added"><svg aria-hidden="true" viewbox="0 0 20 20"><path d="m5 4 10 12M15 4 5 16"></path></svg>arXiv</a>
-<a aria-disabled="true" class="resource-link" data-resource="code" role="link" title="Code link to be added"><svg aria-hidden="true" viewbox="0 0 20 20"><path d="m6 5-4 5 4 5M14 5l4 5-4 5M12 3 8 17"></path></svg>Code</a>
-<a class="resource-link resource-active" href="#film"><svg aria-hidden="true" viewbox="0 0 20 20"><path d="m7 4 9 6-9 6z"></path></svg>Video</a>
-</div><p class="hero-summary">More accurate humanoid motion, without retraining the behavior foundation model.</p>
-<figure class="hero-showcase">
-
-<video aria-label="Nominal and optimized commands for left sidestep and backward walking" class="teaser" controls="" id="teaser" loop="" muted="" playsinline="" poster="assets/images/tracking-poster.webp" preload="none">
-<source src="assets/videos/tracking.mp4" type="video/mp4"/>
-          Your browser cannot play this video. <a href="assets/videos/tracking.mp4">Open the tracking video.</a>
-</video>
-<figcaption>Optimized commands bring execution closer to the reference, shown in blue.<br/>Hardware tracking replays commands computed in simulation. All clips play at 1× speed.</figcaption>
-</figure>
-<div aria-label="Three findings" class="findings"><a href="#results"><strong>79–84<span>%</span></strong><p>Lower mean tracking error<br/>in AMASS simulation</p></a><a href="#compute"><strong>4.02<span>%</span></strong><p>Mean cost regret<br/>on SONIC fitting motions</p></a><a href="#demos"><strong>4 <span>tasks</span></strong><p>Real-robot tasks<br/>with adapted command labels</p></a></div>
-</section>
-
-<div class="section-band"><section class="container section" id="method">
-<h2>Test-Time Command Optimization (TTCO)</h2><p class="section-lead">A behavior foundation model (BFM) turns motion commands into robot actions. The executed motion can differ from the reference. TTCO searches for better commands through parallel simulations of the fixed BFM and robot dynamics.</p>
-<figure class="method-figure">
-<a aria-label="Open figure at full size" href="assets/images/method.webp" rel="noopener" target="_blank"><img alt="TTCO samples candidate commands, evaluates parallel rollouts through a frozen BFM and physics simulator, updates the proposal from costs, and executes the best command segment before replanning." height="687" loading="lazy" src="assets/images/method.webp" width="1584"/></a>
-
-</figure>
-<ol class="method-steps"><li><span>1</span>Sample commands</li><li><span>2</span>Simulate execution</li><li><span>3</span>Refine the proposal</li><li><span>4</span>Execute and replan</li></ol>
-<p class="section-caption">Optimization runs in simulation. For policy training, TTCO generates command labels offline.</p>
-</section></div>
-<section class="results" id="results">
-<div class="container section">
-<h2>Better whole-body motion tracking</h2><p class="section-lead">We evaluate HEFT, SONIC, and TWIST2 on 12,273 motions per model from AMASS, a human motion dataset. Mean global body-position error falls by 79.1–84.2% in simulation.</p>
-<figure class="hardware-figure"><a aria-label="Open figure at full size" href="assets/images/real-tracking.webp" rel="noopener" target="_blank"><img alt="Real-robot sequences: left sidestep and backward walking, with nominal commands above and optimized commands below. Blue reference outlines show that the final displayed positions are closer after optimization." height="1136" loading="lazy" src="assets/images/real-tracking.webp" width="1872"/></a><figcaption>Left sidestep and backward walking on the real robot.<br/>Blue outlines show the reference motion.</figcaption></figure>
-<div class="benchmark">
-<h3>Mean global body-position error</h3>
-<div class="legend"><span><i class="nominal-swatch"></i>Nominal commands</span><span><i class="optimized-swatch"></i>Optimized commands</span></div>
-<div class="benchmark-row"><strong>HEFT</strong><div class="bar-pair"><div class="bar-track"><span class="bar nominal" style="width:22.58%"></span><span>27.1</span></div><div class="bar-track"><span class="bar optimized" style="width:4.75%"></span><span>5.7</span></div></div></div>
-<div class="benchmark-row"><strong>SONIC</strong><div class="bar-pair"><div class="bar-track"><span class="bar nominal" style="width:51.25%"></span><span>61.5</span></div><div class="bar-track"><span class="bar optimized" style="width:10.58%"></span><span>12.7</span></div></div></div>
-<div class="benchmark-row"><strong>TWIST2</strong><div class="bar-pair"><div class="bar-track"><span class="bar nominal" style="width:91.25%"></span><span>109.5</span></div><div class="bar-track"><span class="bar optimized" style="width:14.42%"></span><span>17.3</span></div></div></div>
-<div aria-hidden="true" class="chart-axis"><span>0</span><span>30</span><span>60</span><span>90</span><span>120 cm</span></div>
-<p class="section-caption">Simulation means, in centimeters. Lower is better. All bars use the same scale.</p>
-</div>
-
-
-<details class="data-details"><summary>Tracking accuracy and motion smoothness <span aria-hidden="true">+</span></summary><div class="details-body"><p>These results use compute budget ratio K = 640. Joint acceleration increases for all three models.</p><div class="table-scroll"><table><caption>AMASS means. Each pair reports nominal → optimized performance.</caption><thead><tr><th scope="col">BFM</th><th scope="col">Body-position error (cm)</th><th scope="col">Root-position error (cm)</th><th scope="col">Joint acceleration (rad/s²)</th></tr></thead><tbody><tr><th scope="row">HEFT</th><td>27.1 → 5.7</td><td>26.4 → 4.8</td><td>10.104 → 17.246</td></tr><tr><th scope="row">SONIC</th><td>61.5 → 12.7</td><td>60.9 → 11.7</td><td>8.832 → 11.999</td></tr><tr><th scope="row">TWIST2</th><td>109.5 → 17.3</td><td>107.9 → 16.4</td><td>43.280 → 51.574</td></tr></tbody></table></div></div></details>
-</div>
-</section>
-<section class="section-band" id="compute"><div class="container section"><h2>Allocate compute for better performance</h2><p class="section-lead">How we spend the compute budget matters. A fitted cost model selects the number of candidates, search iterations, rollout steps, and steps executed before replanning.</p><figure class="compute-figure"><a aria-label="Open figure at full size" href="assets/images/compute-strategy.webp" rel="noopener" target="_blank"><img alt="On SONIC fitting motions, the proposed strategy follows the empirical optimum as the compute budget grows from 256 to 8192." height="533" loading="lazy" src="assets/images/compute-strategy.webp" width="879"/></a></figure><div class="compute-numbers"><div><strong>4.02<span>%</span></strong><p>Mean cost regret</p></div><div><strong>58.0<span>%</span></strong><p>Lower measured cost</p></div></div><details class="data-details"><summary>Compute settings and evaluation <span aria-hidden="true">+</span></summary><div class="details-body"><p>The plot and both headline values use SONIC fitting motions. Regret measures how far cost exceeds the best measured cost at the same budget. Cost falls by 58.0% as K increases from 256 to 8192.</p><p>K = I × N × H / E, where I is search iterations, N is candidates per iteration, H is rollout steps, and E is steps executed before replanning. Applied unchanged to three BFMs on five new motions, the strategy reaches 4.60% mean regret.</p></div></details></div></section>
-<section class="demos" id="demos">
-<div class="container section">
-<h2>Reuse demonstrations across models</h2><p class="section-lead">We use recorded SONIC motion to optimize training labels for SONIC or HEFT. Compare policies trained with original commands, TTCO commands, or recorded robot states.</p>
-
-<div class="demo-controls">
-<div aria-label="Choose a real-robot task" class="task-picker" role="group"><button aria-pressed="true" data-task="1" type="button">Cup in basket</button><button aria-pressed="false" data-task="2" type="button">Parcel bag on shelf</button><button aria-pressed="false" data-task="3" type="button">Basket on shelf</button><button aria-pressed="false" data-task="4" type="button">Bottle in drawer</button></div>
-<div aria-label="Choose the target behavior foundation model" class="model-picker" role="group"><span>Target model</span><button aria-pressed="true" data-model="sonic" type="button">SONIC</button><button aria-pressed="false" data-model="heft" type="button">HEFT</button></div>
-</div>
-<p class="demo-context" id="demo-context">SONIC demonstrations → SONIC execution</p>
-<div class="comparison-grid">
-<figure class="comparison"><h3>Original commands</h3><video aria-label="Cup in basket: SONIC policy trained on original commands" controls="" data-label="original" playsinline="" poster="assets/images/task-1-sonic-original.webp" preload="none"><source src="assets/videos/task-1-sonic-original.mp4" type="video/mp4"/></video></figure>
-<figure class="comparison comparison-ours"><h3>TTCO commands <span>Ours</span></h3><video aria-label="Cup in basket: SONIC policy trained on optimized commands" controls="" data-label="ours" playsinline="" poster="assets/images/task-1-sonic-ours.webp" preload="none"><source src="assets/videos/task-1-sonic-ours.mp4" type="video/mp4"/></video></figure>
-<figure class="comparison"><h3>Robot states</h3><video aria-label="Cup in basket: SONIC policy trained on robot-state labels" controls="" data-label="state" playsinline="" poster="assets/images/task-1-sonic-state.webp" preload="none"><source src="assets/videos/task-1-sonic-state.mp4" type="video/mp4"/></video><p class="missing-clip" hidden="">Demo clip not provided.<span>The success rate is reported in the table below.</span></p></figure>
-</div>
-<div class="demo-playback"><button class="text-button" id="play-comparison" type="button"><span aria-hidden="true">▶</span> Play comparison</button><p>Separate evaluation rollouts · 1× speed</p></div>
-<noscript><p class="method-note">Enable JavaScript to change tasks and target models. The three videos above remain available without it.</p></noscript>
-<details class="real-results data-details"><summary>Real-robot success rates <span aria-hidden="true">+</span></summary><div class="details-body"><p>60 evaluation rollouts per task and label source. Values are percentages.</p>
-
-<div class="table-scroll"><table id="real-results"><caption id="results-caption">SONIC demonstrations → SONIC execution</caption><thead><tr><th scope="col">Task</th><th scope="col">Original</th><th class="ours-cell" scope="col">TTCO</th><th scope="col">State</th></tr></thead><tbody><tr data-result-task="1"><th scope="row">Cup in basket</th><td>55.0</td><td class="ours-cell">55.0</td><td>0.0</td></tr><tr data-result-task="2"><th scope="row">Parcel bag on shelf</th><td>83.3</td><td class="ours-cell">91.7</td><td>10.0</td></tr><tr data-result-task="3"><th scope="row">Basket on shelf</th><td>53.3</td><td class="ours-cell">50.0</td><td>0.0</td></tr><tr data-result-task="4"><th scope="row">Bottle in drawer</th><td>50.0</td><td class="ours-cell">60.0</td><td>0.0</td></tr><tr class="mean-row"><th scope="row">Mean</th><td>60.4</td><td class="ours-cell">64.2</td><td>2.5</td></tr></tbody></table></div>
-<p class="small-note" id="result-note">With SONIC as the target, optimized labels reach 64.2% mean success. Original-command labels reach 60.4%; robot-state labels reach 2.5%.</p>
-
-</div></details><p aria-live="polite" class="sr-only" id="demo-announcement" role="status"></p>
-</div>
-</section>
-<div class="section-band"><section class="container section film-section" id="film">
-<h2>Watch the full video</h2><p class="section-lead">3:59 · English narration and subtitles</p>
-<video aria-label="Complete narrated supplementary video" controls="" id="overview-film" playsinline="" poster="assets/images/overview-poster.webp" preload="none">
-<source src="assets/videos/overview.mp4" type="video/mp4"/>
-<track kind="captions" label="English" src="assets/videos/overview.vtt" srclang="en"/>
-        Your browser cannot play this video. <a href="assets/videos/overview.mp4">Open the full video.</a>
-</video>
-<nav aria-label="Video chapters" class="chapters"><button data-time="5" type="button"><span>00:05</span>The execution gap</button><button data-time="16" type="button"><span>00:16</span>Command optimization</button><button data-time="59" type="button"><span>00:59</span>Compute allocation</button><button data-time="89" type="button"><span>01:29</span>Demonstration reuse</button><button data-time="135.5" type="button"><span>02:15</span>Real-robot tasks</button></nav>
-</section></div>
-</main>
-<footer class="site-footer"><div class="container"><p>Test-Time Compute for Humanoid Behavior Foundation Models</p><a class="back-top" href="#main">Back to top <span aria-hidden="true">↑</span></a></div></footer>
-</body>
+  <head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <meta content="#f7f6f2" name="theme-color"/>
+    <meta content="Test-Time Command Optimization improves motion execution in humanoid behavior foundation models without retraining. Explore the method, results, and real-robot demonstrations." name="description"/>
+    <meta content="website" property="og:type"/>
+    <meta content="Test-Time Compute for Humanoid Behavior Foundation Models" property="og:title"/>
+    <meta content="Optimize motion commands, allocate test-time compute, and reuse demonstrations across humanoid behavior foundation models." property="og:description"/>
+    <meta content="https://bfmttc.github.io/" property="og:url"/>
+    <meta content="https://bfmttc.github.io/assets/images/overview-poster.webp" property="og:image"/>
+    <meta content="summary_large_image" name="twitter:card"/>
+    <link href="https://bfmttc.github.io/" rel="canonical"/>
+    <link href="assets/favicon.svg" rel="icon" type="image/svg+xml"/>
+    <link href="styles.css" rel="stylesheet"/>
+    <script defer="" src="site.js"></script>
+    <title>Test-Time Compute for Humanoid Behavior Foundation Models</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="nav-shell">
+        <a aria-label="BFM test-time compute, home" class="wordmark" href="#main">BFM<span>·</span>TTC</a>
+        <nav aria-label="Page sections">
+          <a href="#film">Film</a>
+          <a href="#method">Method</a>
+          <a href="#results">Tracking</a>
+          <a href="#demos">Demos</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <section aria-labelledby="paper-title" class="hero container">
+        <h1 id="paper-title"><span>Test-Time Compute</span> for Humanoid<br class="desktop-break"/>Behavior Foundation Models</h1>
+        <div aria-label="Authors" class="authors">
+          <span>Weiji Xie<sup>1,2,†</sup></span>
+          <span>Junsong Wu<sup>1,2,†</sup></span>
+          <span>Zibo Zhou<sup>1,2</sup></span>
+          <span>Yueru Chen<sup>1,2</sup></span>
+          <span>Xingyi Wang<sup>1,3</sup></span>
+          <span>Zhenhua Xiong<sup>2</sup></span>
+          <span>Weinan Zhang<sup>2</sup></span>
+          <span>Chenjia Bai<sup>1,4,*</sup></span>
+        </div>
+        <div aria-label="Affiliations" class="affiliations">
+          <span><sup>1</sup>Institute of Artificial Intelligence (TeleAI), China Telecom</span>
+          <span><sup>2</sup>Shanghai Jiaotong University</span>
+          <span><sup>3</sup>Zhejiang University</span>
+          <span><sup>4</sup>Gamma Robotics</span>
+        </div>
+        <p class="contributions">† Equal contribution <span>·</span> * Corresponding author</p>
+        <div aria-label="Project resources" class="resource-links">
+          <a aria-disabled="true" class="resource-link" data-resource="paper" role="link" title="PDF link to be added"><svg aria-hidden="true" viewbox="0 0 20 20"><path d="M5 2h7l4 4v12H5zM12 2v5h4M8 11h5M8 14h5"></path></svg>Paper</a>
+          <a aria-disabled="true" class="resource-link" data-resource="arxiv" role="link" title="arXiv link to be added"><svg aria-hidden="true" viewbox="0 0 20 20"><path d="m5 4 10 12M15 4 5 16"></path></svg>arXiv</a>
+          <a aria-disabled="true" class="resource-link" data-resource="code" role="link" title="Code link to be added"><svg aria-hidden="true" viewbox="0 0 20 20"><path d="m6 5-4 5 4 5M14 5l4 5-4 5M12 3 8 17"></path></svg>Code</a>
+          <a class="resource-link resource-active" href="#film"><svg aria-hidden="true" viewbox="0 0 20 20"><path d="m7 4 9 6-9 6z"></path></svg>Video</a>
+        </div>
+        <div class="project-film" id="film">
+          <div class="film-frame">
+            <video aria-label="Complete narrated supplementary video" controls="" id="overview-film" playsinline="" poster="assets/images/overview-poster.webp" preload="metadata"><source src="assets/videos/overview.mp4" type="video/mp4"/><track kind="captions" label="English" src="assets/videos/overview.vtt" srclang="en"/>Your browser cannot play this video.<a href="assets/videos/overview.mp4">Open the full video.</a></video>
+            <button aria-label="Play the complete project film" class="film-play" id="play-film" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><path d="M8 5l11 7-11 7z"></path></svg></button>
+          </div>
+          <details class="film-chapters">
+            <summary><span class="film-label">Project film<span>3:59 · English narration &amp; captions</span></span><span class="chapter-toggle">Chapters<span aria-hidden="true">+</span></span></summary>
+            <nav aria-label="Video chapters" class="chapters">
+              <button data-time="5" type="button"><span>00:05</span>The execution gap</button>
+              <button data-time="16" type="button"><span>00:16</span>Command optimization</button>
+              <button data-time="59" type="button"><span>00:59</span>Compute allocation</button>
+              <button data-time="89" type="button"><span>01:29</span>Demonstration reuse</button>
+              <button data-time="135.5" type="button"><span>02:15</span>Real-robot tasks</button>
+            </nav>
+          </details>
+        </div>
+        <p class="hero-summary">We optimize motion commands at test time to improve execution, without retraining the behavior foundation model.</p>
+      </section>
+      <div class="section-band">
+        <section class="container section" id="method">
+          <h2>Test-Time Command Optimization</h2>
+          <p class="section-lead">TTCO searches for commands that follow the reference more closely. Candidates are evaluated in parallel simulations of the fixed behavior foundation model and robot dynamics.</p>
+          <figure class="method-figure">
+            <a aria-label="Open figure at full size" href="assets/images/method.webp" rel="noopener" target="_blank"><img alt="TTCO samples candidate commands, evaluates parallel rollouts through a frozen BFM and physics simulator, updates the proposal from costs, and executes the best command segment before replanning." height="687" loading="lazy" src="assets/images/method.webp" width="1584"/></a>
+          </figure>
+          <ol class="method-steps">
+            <li><span aria-hidden="true">1</span>Sample commands</li>
+            <li><span aria-hidden="true">2</span>Simulate execution</li>
+            <li><span aria-hidden="true">3</span>Refine the proposal</li>
+            <li><span aria-hidden="true">4</span>Execute and replan</li>
+          </ol>
+          <p class="section-caption">In simulation, execute a command segment and replan. For policy training, generate command labels offline.</p>
+        </section>
+      </div>
+      <section class="results" id="results">
+        <div class="container section">
+          <h2>More accurate motion tracking</h2>
+          <p class="section-lead">Across HEFT, SONIC, and TWIST2, mean global body-position error falls by 79.1–84.2% in simulation. Each model is evaluated on 12,273 AMASS motions.</p>
+          <figure class="tracking-showcase">
+            <video aria-label="Nominal and optimized commands for left sidestep and backward walking" class="teaser" controls="" id="teaser" loop="" muted="" playsinline="" poster="assets/images/tracking-poster.webp" preload="metadata"><source src="assets/videos/tracking.mp4" type="video/mp4"/>Your browser cannot play this video.<a href="assets/videos/tracking.mp4">Open the tracking video.</a></video>
+            <figcaption>Blue outlines show the reference motion. Hardware replays commands optimized in simulation.<br/>All clips play at 1× speed.</figcaption>
+          </figure>
+          <div class="benchmark">
+            <h3>Mean global body-position error</h3>
+            <div class="legend">
+              <span><i class="nominal-swatch"></i>Nominal commands</span>
+              <span><i class="optimized-swatch"></i>Optimized commands</span>
+            </div>
+            <div class="benchmark-row">
+              <strong>HEFT</strong>
+              <div class="bar-pair">
+                <div class="bar-track">
+                  <span class="bar nominal" style="width:22.58%"></span>
+                  <span>27.1</span>
+                </div>
+                <div class="bar-track">
+                  <span class="bar optimized" style="width:4.75%"></span>
+                  <span>5.7</span>
+                </div>
+              </div>
+            </div>
+            <div class="benchmark-row">
+              <strong>SONIC</strong>
+              <div class="bar-pair">
+                <div class="bar-track">
+                  <span class="bar nominal" style="width:51.25%"></span>
+                  <span>61.5</span>
+                </div>
+                <div class="bar-track">
+                  <span class="bar optimized" style="width:10.58%"></span>
+                  <span>12.7</span>
+                </div>
+              </div>
+            </div>
+            <div class="benchmark-row">
+              <strong>TWIST2</strong>
+              <div class="bar-pair">
+                <div class="bar-track">
+                  <span class="bar nominal" style="width:91.25%"></span>
+                  <span>109.5</span>
+                </div>
+                <div class="bar-track">
+                  <span class="bar optimized" style="width:14.42%"></span>
+                  <span>17.3</span>
+                </div>
+              </div>
+            </div>
+            <div aria-hidden="true" class="chart-axis">
+              <span>0</span>
+              <span>30</span>
+              <span>60</span>
+              <span>90</span>
+              <span>120 cm</span>
+            </div>
+            <p class="section-caption">Simulation means, in centimeters. Lower is better. All bars use the same scale.</p>
+          </div>
+          <details class="data-details">
+            <summary>Measurements and hardware frames<span aria-hidden="true">+</span></summary>
+            <div class="details-body">
+              <p>These results use compute budget ratio K = 640. Joint acceleration increases for all three models.</p>
+              <div class="table-scroll">
+                <table>
+                  <caption>AMASS means. Each pair reports nominal → optimized performance.</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">BFM</th>
+                      <th scope="col">Body-position error (cm)</th>
+                      <th scope="col">Root-position error (cm)</th>
+                      <th scope="col">Joint acceleration (rad/s²)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">HEFT</th>
+                      <td>27.1 → 5.7</td>
+                      <td>26.4 → 4.8</td>
+                      <td>10.104 → 17.246</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">SONIC</th>
+                      <td>61.5 → 12.7</td>
+                      <td>60.9 → 11.7</td>
+                      <td>8.832 → 11.999</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">TWIST2</th>
+                      <td>109.5 → 17.3</td>
+                      <td>107.9 → 16.4</td>
+                      <td>43.280 → 51.574</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <figure class="hardware-figure">
+                <a aria-label="Open figure at full size" href="assets/images/real-tracking.webp" rel="noopener" target="_blank"><img alt="Real-robot sequences: left sidestep and backward walking, with nominal commands above and optimized commands below. Blue reference outlines show that the final displayed positions are closer after optimization." height="1136" loading="lazy" src="assets/images/real-tracking.webp" width="1872"/></a>
+                <figcaption>Left sidestep and backward walking on the real robot.<br/>Blue outlines show the reference motion.</figcaption>
+              </figure>
+            </div>
+          </details>
+        </div>
+      </section>
+      <section class="section-band" id="compute">
+        <div class="container section">
+          <h2>How we allocate compute matters</h2>
+          <p class="section-lead">A fitted cost model selects how many commands to sample, how far to simulate, and when to replan. More compute then produces lower tracking cost.</p>
+          <figure class="compute-figure">
+            <a aria-label="Open figure at full size" href="assets/images/compute-strategy.webp" rel="noopener" target="_blank"><img alt="On SONIC fitting motions, the proposed strategy follows the empirical optimum as the compute budget grows from 256 to 8192." height="533" loading="lazy" src="assets/images/compute-strategy.webp" width="879"/></a>
+          </figure>
+          <div class="compute-numbers">
+            <div>
+              <strong>4.02<span>%</span></strong>
+              <p>Mean cost regret</p>
+            </div>
+            <div>
+              <strong>58.0<span>%</span></strong>
+              <p>Lower cost from K = 256 to 8192</p>
+            </div>
+          </div>
+          <details class="data-details">
+            <summary>Compute settings and evaluation<span aria-hidden="true">+</span></summary>
+            <div class="details-body">
+              <p>The plot and both headline values use SONIC fitting motions. Regret measures how far cost exceeds the best measured cost at the same budget. Cost falls by 58.0% as K increases from 256 to 8192.</p>
+              <p>K = I × N × H / E, where I is search iterations, N is candidates per iteration, H is rollout steps, and E is steps executed before replanning. Applied unchanged to three BFMs on five new motions, the strategy reaches 4.60% mean regret.</p>
+            </div>
+          </details>
+        </div>
+      </section>
+      <section class="demos" id="demos">
+        <div class="container section">
+          <h2>Reuse demonstrations across models</h2>
+          <p class="section-lead">Use recorded SONIC motion to optimize training labels for SONIC or HEFT. Compare original commands, TTCO commands, and recorded robot states.</p>
+          <div class="demo-controls">
+            <div aria-label="Choose a real-robot task" class="task-picker" role="group">
+              <button aria-pressed="true" data-task="1" type="button">Cup in basket</button>
+              <button aria-pressed="false" data-task="2" type="button">Parcel bag on shelf</button>
+              <button aria-pressed="false" data-task="3" type="button">Basket on shelf</button>
+              <button aria-pressed="false" data-task="4" type="button">Bottle in drawer</button>
+            </div>
+            <div aria-label="Choose the target behavior foundation model" class="model-picker" role="group">
+              <span>Target model</span>
+              <button aria-pressed="true" data-model="sonic" type="button">SONIC</button>
+              <button aria-pressed="false" data-model="heft" type="button">HEFT</button>
+            </div>
+          </div>
+          <p class="demo-context" id="demo-context">SONIC demonstrations → SONIC execution</p>
+          <div class="comparison-grid">
+            <figure class="comparison">
+              <h3>Original commands</h3>
+              <video aria-label="Cup in basket: SONIC policy trained on original commands" controls="" data-label="original" playsinline="" poster="assets/images/task-1-sonic-original.webp" preload="none"><source src="assets/videos/task-1-sonic-original.mp4" type="video/mp4"/></video>
+            </figure>
+            <figure class="comparison comparison-ours">
+              <h3>TTCO commands<span>Ours</span></h3>
+              <video aria-label="Cup in basket: SONIC policy trained on optimized commands" controls="" data-label="ours" playsinline="" poster="assets/images/task-1-sonic-ours.webp" preload="none"><source src="assets/videos/task-1-sonic-ours.mp4" type="video/mp4"/></video>
+            </figure>
+            <figure class="comparison">
+              <h3>Robot states</h3>
+              <video aria-label="Cup in basket: SONIC policy trained on robot-state labels" controls="" data-label="state" playsinline="" poster="assets/images/task-1-sonic-state.webp" preload="none"><source src="assets/videos/task-1-sonic-state.mp4" type="video/mp4"/></video>
+              <p class="missing-clip" hidden="">Demo clip not provided.<span>The success rate is reported in the table below.</span></p>
+            </figure>
+          </div>
+          <div class="demo-playback">
+            <button class="text-button" id="play-comparison" type="button"><span aria-hidden="true">▶</span>Play comparison</button>
+            <p>Separate evaluation rollouts · 1× speed</p>
+          </div>
+          <noscript><p class="method-note">Enable JavaScript to change tasks and target models. The three videos above remain available without it.</p></noscript>
+          <details class="real-results data-details">
+            <summary>Real-robot success rates<span aria-hidden="true">+</span></summary>
+            <div class="details-body">
+              <p>60 evaluation rollouts per task and label source. Values are percentages.</p>
+              <div class="table-scroll">
+                <table id="real-results">
+                  <caption id="results-caption">SONIC demonstrations → SONIC execution</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Task</th>
+                      <th scope="col">Original</th>
+                      <th class="ours-cell" scope="col">TTCO</th>
+                      <th scope="col">State</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr data-result-task="1">
+                      <th scope="row">Cup in basket</th>
+                      <td>55.0</td>
+                      <td class="ours-cell">55.0</td>
+                      <td>0.0</td>
+                    </tr>
+                    <tr data-result-task="2">
+                      <th scope="row">Parcel bag on shelf</th>
+                      <td>83.3</td>
+                      <td class="ours-cell">91.7</td>
+                      <td>10.0</td>
+                    </tr>
+                    <tr data-result-task="3">
+                      <th scope="row">Basket on shelf</th>
+                      <td>53.3</td>
+                      <td class="ours-cell">50.0</td>
+                      <td>0.0</td>
+                    </tr>
+                    <tr data-result-task="4">
+                      <th scope="row">Bottle in drawer</th>
+                      <td>50.0</td>
+                      <td class="ours-cell">60.0</td>
+                      <td>0.0</td>
+                    </tr>
+                    <tr class="mean-row">
+                      <th scope="row">Mean</th>
+                      <td>60.4</td>
+                      <td class="ours-cell">64.2</td>
+                      <td>2.5</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="small-note" id="result-note">With SONIC as the target, optimized labels reach 64.2% mean success. Original-command labels reach 60.4%; robot-state labels reach 2.5%.</p>
+            </div>
+          </details>
+          <p aria-live="polite" class="sr-only" id="demo-announcement" role="status"></p>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div class="container">
+        <p>Test-Time Compute for Humanoid Behavior Foundation Models</p>
+        <a class="back-top" href="#main">Back to top<span aria-hidden="true">↑</span></a>
+      </div>
+    </footer>
+  </body>
 </html>
