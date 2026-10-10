@@ -117,10 +117,16 @@ for (const video of comparisons) {
 
 const film = document.getElementById('overview-film');
 const filmPlayButton = document.getElementById('play-film');
+const filmCover = document.querySelector('.film-cover');
+filmPlayButton.hidden = false;
+filmCover.hidden = false;
 filmPlayButton.addEventListener('click', async () => {
   try { await film.play(); } catch { film.focus(); }
 });
-film.addEventListener('play', () => { filmPlayButton.hidden = true; });
+film.addEventListener('play', () => {
+  filmPlayButton.hidden = true;
+  filmCover.hidden = true;
+});
 const chapters = [...document.querySelectorAll('[data-time]')];
 for (const button of chapters) {
   button.addEventListener('click', async () => {
