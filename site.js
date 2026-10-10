@@ -115,38 +115,38 @@ for (const video of comparisons) {
   video.addEventListener('ended', updateComparisonPlayback);
 }
 
-const film = document.getElementById('overview-film');
-const filmPlayButton = document.getElementById('play-film');
-const filmCover = document.querySelector('.film-cover');
-filmPlayButton.hidden = false;
-filmCover.hidden = false;
-filmPlayButton.addEventListener('click', async () => {
-  try { await film.play(); } catch { film.focus(); }
+const overviewVideo = document.getElementById('overview-video');
+const videoPlayButton = document.getElementById('play-video');
+const videoCover = document.querySelector('.video-cover');
+videoPlayButton.hidden = false;
+videoCover.hidden = false;
+videoPlayButton.addEventListener('click', async () => {
+  try { await overviewVideo.play(); } catch { overviewVideo.focus(); }
 });
-film.addEventListener('play', () => {
-  filmPlayButton.hidden = true;
-  filmCover.hidden = true;
+overviewVideo.addEventListener('play', () => {
+  videoPlayButton.hidden = true;
+  videoCover.hidden = true;
 });
 const chapters = [...document.querySelectorAll('[data-time]')];
 for (const button of chapters) {
   button.addEventListener('click', async () => {
     const time = Number(button.dataset.time);
-    if (film.readyState === HTMLMediaElement.HAVE_NOTHING) {
-      film.addEventListener('loadedmetadata', () => { film.currentTime = time; }, { once: true });
+    if (overviewVideo.readyState === HTMLMediaElement.HAVE_NOTHING) {
+      overviewVideo.addEventListener('loadedmetadata', () => { overviewVideo.currentTime = time; }, { once: true });
     } else {
-      film.currentTime = time;
+      overviewVideo.currentTime = time;
     }
     try {
-      await film.play();
+      await overviewVideo.play();
     } catch {
-      film.focus();
+      overviewVideo.focus();
     }
   });
 }
-film.addEventListener('timeupdate', () => {
+overviewVideo.addEventListener('timeupdate', () => {
   for (const [index, button] of chapters.entries()) {
-    const active = film.currentTime >= Number(button.dataset.time)
-      && (index === chapters.length - 1 || film.currentTime < Number(chapters[index + 1].dataset.time));
+    const active = overviewVideo.currentTime >= Number(button.dataset.time)
+      && (index === chapters.length - 1 || overviewVideo.currentTime < Number(chapters[index + 1].dataset.time));
     button.classList.toggle('active', active);
     if (active) button.setAttribute('aria-current', 'true');
     else button.removeAttribute('aria-current');

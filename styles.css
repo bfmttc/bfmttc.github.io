@@ -47,19 +47,19 @@ h1 > span { color: var(--accent); }
 .resource-active { background: var(--ink); border-color: var(--ink); color: #fff; }
 .resource-active:hover { background: var(--accent); border-color: var(--accent); }
 .resource-active svg { fill: currentColor; stroke: none; width: 15px; }
-.project-film { text-align: left; }
-.film-frame { position: relative; overflow: hidden; border-radius: 6px; background: var(--ink); box-shadow: 0 18px 48px -28px rgb(28 42 54 / 30%); }
-#overview-film { aspect-ratio: 16 / 9; }
-.film-cover { position: absolute; inset: 0; height: 100%; object-fit: cover; }
-.film-play { position: absolute; top: 50%; left: 50%; display: grid; place-items: center; width: 76px; height: 76px; padding: 0; transform: translate(-50%, -50%); border: 1px solid rgb(255 255 255 / 65%); border-radius: 50%; background: rgb(28 42 54 / 90%); color: #fff; box-shadow: 0 8px 26px rgb(0 0 0 / 18%); }
-.film-play:hover { background: var(--accent); }
-.film-play svg { width: 30px; height: 30px; fill: currentColor; margin-left: 4px; }
-.film-chapters summary { padding: 20px 0; font-size: 16px; }
-.film-label { display: flex; align-items: center; gap: 18px; font-size: 17px; color: var(--ink); }
-.film-label > span { color: var(--muted); font-size: 15px; font-weight: 400; }
+.project-video { text-align: left; }
+.video-frame { position: relative; overflow: hidden; border-radius: 6px; background: var(--ink); box-shadow: 0 18px 48px -28px rgb(28 42 54 / 30%); }
+#overview-video { aspect-ratio: 16 / 9; }
+.video-cover { position: absolute; inset: 0; height: 100%; object-fit: cover; }
+.video-play { position: absolute; top: 50%; left: 50%; display: grid; place-items: center; width: 76px; height: 76px; padding: 0; transform: translate(-50%, -50%); border: 1px solid rgb(255 255 255 / 65%); border-radius: 50%; background: rgb(28 42 54 / 90%); color: #fff; box-shadow: 0 8px 26px rgb(0 0 0 / 18%); }
+.video-play:hover { background: var(--accent); }
+.video-play svg { width: 30px; height: 30px; fill: currentColor; margin-left: 4px; }
+.video-chapters summary { padding: 20px 0; font-size: 16px; }
+.video-label { display: flex; align-items: center; gap: 18px; font-size: 17px; color: var(--ink); }
+.video-label > span { color: var(--muted); font-size: 15px; font-weight: 400; }
 .chapter-toggle { display: flex; align-items: center; gap: 13px; color: var(--muted); font-size: 15px; }
 .chapter-toggle > span { color: var(--accent); font-size: 22px; line-height: 1; }
-.film-chapters[open] .chapter-toggle > span { transform: rotate(45deg); }
+.video-chapters[open] .chapter-toggle > span { transform: rotate(45deg); }
 .chapters { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; padding-bottom: 24px; }
 .chapters button { display: grid; gap: 6px; padding: 12px 0; text-align: left; background: transparent; border: 0; border-top: 1px solid var(--line); font-size: 16px; line-height: 1.45; }
 .chapters button > span { font-size: 15px; color: var(--accent); font-variant-numeric: tabular-nums; }
@@ -171,12 +171,12 @@ tr[data-result-task].selected { background: #efeee8; }
   .resource-links { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; max-width: 360px; margin: 21px auto 27px; }
   .resource-link { justify-content: center; padding: 8px 5px; gap: 5px; font-size: 14px; }
   .resource-link svg { width: 15px; height: 15px; }
-  .film-frame { border-radius: 4px; }
-  .film-play { width: 54px; height: 54px; }
-  .film-play svg { width: 25px; height: 25px; }
-  .film-chapters summary { gap: 10px; padding-block: 15px; }
-  .film-label { align-items: flex-start; flex-direction: column; gap: 2px; font-size: 16px; }
-  .film-label > span { font-size: 13px; }
+  .video-frame { border-radius: 4px; }
+  .video-play { width: 54px; height: 54px; }
+  .video-play svg { width: 25px; height: 25px; }
+  .video-chapters summary { gap: 10px; padding-block: 15px; }
+  .video-label { align-items: flex-start; flex-direction: column; gap: 2px; font-size: 16px; }
+  .video-label > span { font-size: 13px; }
   .chapter-toggle { gap: 8px; font-size: 14px; }
   .chapters { grid-template-columns: 1fr 1fr; gap: 9px 18px; padding-bottom: 15px; }
   .chapters button { font-size: 15px; }
