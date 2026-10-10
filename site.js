@@ -119,7 +119,12 @@ const film = document.getElementById('overview-film');
 const chapters = [...document.querySelectorAll('[data-time]')];
 for (const button of chapters) {
   button.addEventListener('click', async () => {
-    film.currentTime = Number(button.dataset.time);
+    const time = Number(button.dataset.time);
+    if (film.readyState === HTMLMediaElement.HAVE_NOTHING) {
+      film.addEventListener('loadedmetadata', () => { film.currentTime = time; }, { once: true });
+    } else {
+      film.currentTime = time;
+    }
     try {
       await film.play();
     } catch {
