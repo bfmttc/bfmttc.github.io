@@ -66,7 +66,7 @@ function updateDemonstrations() {
     row.classList.toggle('selected', Number(row.dataset.resultTask) === selectedTask);
   }
   const [original, ours, state] = successRates[selectedModel][4];
-  document.getElementById('result-note').textContent = `With ${selectedModel.toUpperCase()} as the target, optimized labels reach ${ours.toFixed(1)}% mean success. Original-command labels reach ${original.toFixed(1)}%; robot-state labels reach ${state.toFixed(1)}%.`;
+  document.getElementById('result-note').textContent = `Policies trained on TTCO labels reach ${ours.toFixed(1)}% mean success with ${selectedModel.toUpperCase()}, compared with ${original.toFixed(1)}% for original-command labels and ${state.toFixed(1)}% for robot-state labels.`;
   document.getElementById('demo-announcement').textContent = `${tasks[selectedTask]}. ${context}. Videos and results updated.`;
   comparisonButton.innerHTML = '<span aria-hidden="true">▶</span> Play comparison';
 }

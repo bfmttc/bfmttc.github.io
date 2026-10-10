@@ -73,21 +73,21 @@
             </nav>
           </details>
         </div>
-        <p class="hero-summary">We optimize motion commands at test time to improve execution, without retraining the behavior foundation model.</p>
+        <p class="hero-summary">Test-Time Command Optimization (TTCO) improves humanoid motion execution without retraining the behavior foundation model.</p>
       </section>
       <div class="section-band">
         <section aria-labelledby="gap-title" class="container section" id="gap">
-          <h2 id="gap-title">Command–Execution Gap</h2>
-          <p class="section-lead">A behavior foundation model (BFM) maps motion commands to robot actions. Even when the command matches the reference motion, execution can drift in position or miss intended contacts. This difference is the command–execution gap.</p>
+          <h2 id="gap-title">The Gap between Desired and Executed Motion</h2>
+          <p class="section-lead">A humanoid behavior foundation model (BFM) maps motion commands to robot actions. Using the desired motion as the command can still leave body-position errors or missed hand and foot contacts. We call this difference the command–execution gap.</p>
           <figure class="gap-figure">
             <a aria-label="Open the command-execution comparison at full size" href="assets/images/command-execution-gap.webp" rel="noopener" target="_blank"><img alt="The same reference motion is sent to a fixed behavior foundation model and robot dynamics. Using the reference as the command leaves errors in left sidestep and backward walking. Adjusted commands produce execution closer to the same reference." height="728" loading="lazy" src="assets/images/command-execution-gap.webp" width="1800"/></a>
             <figcaption>Blue: reference · Orange: command · Gray: execution. Command changes are exaggerated for illustration.</figcaption>
           </figure>
-          <p class="gap-insight">We keep the reference motion and BFM fixed. We search for a different command that brings execution closer to the reference.</p>
+          <p class="gap-insight">The command that produces more accurate execution need not match the desired motion. We adapt the command while keeping the reference motion and BFM fixed.</p>
         </section>
         <section class="container section" id="method">
-          <h2>Test-Time Command Optimization</h2>
-          <p class="section-lead">Test-Time Command Optimization (TTCO) searches for commands whose execution follows the reference more closely. Candidates are evaluated in parallel simulations of the fixed behavior foundation model and robot dynamics.</p>
+          <h2>TTCO Adapts Commands to the BFM</h2>
+          <p class="section-lead">TTCO samples alternative motion commands and evaluates them in parallel closed-loop simulations of the fixed BFM and robot dynamics. Tracking and regularization costs guide the search toward commands that bring execution closer to the reference.</p>
           <figure class="method-figure">
             <a aria-label="Open figure at full size" href="assets/images/method.webp" rel="noopener" target="_blank"><img alt="TTCO samples candidate commands, evaluates parallel rollouts through a frozen BFM and physics simulator, updates the proposal from costs, and executes the best command segment before replanning." height="687" loading="lazy" src="assets/images/method.webp" width="1584"/></a>
           </figure>
@@ -97,16 +97,16 @@
             <li><span aria-hidden="true">3</span>Refine the proposal</li>
             <li><span aria-hidden="true">4</span>Execute and replan</li>
           </ol>
-          <p class="section-caption">In simulation, execute a command segment and replan. For policy training, generate command labels offline.</p>
+          <p class="section-caption">The simulator executes the first segment of the lowest-cost candidate, then replans. For policy learning, command labels are generated offline.</p>
         </section>
       </div>
       <section class="results" id="results">
         <div class="container section">
-          <h2>Motion-Tracking Precision</h2>
-          <p class="section-lead">Across HEFT, SONIC, and TWIST2, mean global body-position error falls by 79.1–84.2% in simulation. Each model is evaluated on 12,273 AMASS motions.</p>
+          <h2>TTCO Improves Tracking Precision</h2>
+          <p class="section-lead">On 12,273 AMASS reference motions per BFM, optimized commands reduce mean global body-position error by 79.1–84.2% across HEFT, SONIC, and TWIST2 in simulation. The comparison uses the same pretrained models without further training.</p>
           <figure class="tracking-showcase">
             <video aria-label="Nominal and optimized commands for left sidestep and backward walking" class="teaser" controls="" id="teaser" loop="" muted="" playsinline="" poster="assets/images/tracking-poster.webp" preload="metadata"><source src="assets/videos/tracking.mp4" type="video/mp4"/>Your browser cannot play this video.<a href="assets/videos/tracking.mp4">Open the tracking video.</a></video>
-            <figcaption>Blue outlines show the reference motion. Hardware replays commands optimized in simulation.<br/>All clips play at 1× speed.</figcaption>
+            <figcaption>Left sidestep and backward walking. The real robot replays commands optimized in simulation without replanning.<br/>Blue outlines mark the reference motion; all clips play at 1× speed.</figcaption>
           </figure>
           <div class="benchmark">
             <h3>Mean global body-position error</h3>
@@ -165,7 +165,7 @@
           <details class="data-details">
             <summary>Measurements and hardware frames<span aria-hidden="true">+</span></summary>
             <div class="details-body">
-              <p>These results use compute budget ratio K = 640. Joint acceleration increases for all three models.</p>
+              <p>These simulation results use compute budget ratio K = 640. Joint acceleration increases for all three BFMs, showing a trade-off between tracking precision and motion smoothness.</p>
               <div class="table-scroll">
                 <table>
                   <caption>AMASS means. Each pair reports nominal → optimized performance.</caption>
@@ -201,7 +201,7 @@
               </div>
               <figure class="hardware-figure">
                 <a aria-label="Open figure at full size" href="assets/images/real-tracking.webp" rel="noopener" target="_blank"><img alt="Real-robot sequences: left sidestep and backward walking, with nominal commands above and optimized commands below. Blue reference outlines show that the final displayed positions are closer after optimization." height="1136" loading="lazy" src="assets/images/real-tracking.webp" width="1872"/></a>
-                <figcaption>Left sidestep and backward walking on the real robot.<br/>Blue outlines show the reference motion.</figcaption>
+                <figcaption>Simulation-optimized commands are replayed on the real robot without replanning.<br/>Blue outlines mark the reference motion.</figcaption>
               </figure>
             </div>
           </details>
@@ -209,8 +209,8 @@
       </section>
       <section class="section-band" id="compute">
         <div class="container section">
-          <h2>Scaling Test-Time Compute</h2>
-          <p class="section-lead">A fitted cost model selects how many commands to sample, how far to simulate, and when to replan. More compute then produces lower tracking cost.</p>
+          <h2>A Cost Model Guides Compute Allocation</h2>
+          <p class="section-lead">Tracking gains depend on how compute is split across command candidates, search iterations, rollout length, and replanning. We fit a surrogate cost model to measured costs and use its predictions to select an approximate compute-optimal allocation at each budget.</p>
           <figure class="compute-figure">
             <a aria-label="Open figure at full size" href="assets/images/compute-strategy.webp" rel="noopener" target="_blank"><img alt="On SONIC fitting motions, the proposed strategy follows the empirical optimum as the compute budget grows from 256 to 8192." height="533" loading="lazy" src="assets/images/compute-strategy.webp" width="879"/></a>
           </figure>
@@ -227,16 +227,16 @@
           <details class="data-details">
             <summary>Compute settings and evaluation<span aria-hidden="true">+</span></summary>
             <div class="details-body">
-              <p>The plot and both headline values use SONIC fitting motions. Regret measures how far cost exceeds the best measured cost at the same budget. Cost falls by 58.0% as K increases from 256 to 8192.</p>
-              <p>K = I × N × H / E, where I is search iterations, N is candidates per iteration, H is rollout steps, and E is steps executed before replanning. Applied unchanged to three BFMs on five new motions, the strategy reaches 4.60% mean regret.</p>
+              <p>The model predicts costs for untested compute configurations from limited measurements. On SONIC and the motions used for fitting, its strategy reaches 4.02% mean regret across six budgets. Regret is the percentage by which cost exceeds the best measured cost at the same budget. Cost falls by 58.0% as K increases from 256 to 8192.</p>
+              <p>K = I × N × H / E, where I is search iterations, N is candidates per iteration, H is rollout steps, and E is steps executed before replanning. Applied unchanged to SONIC, HEFT, and TWIST2 on five new motions, the strategy reaches 4.60% mean regret across five budgets.</p>
             </div>
           </details>
         </div>
       </section>
       <section class="demos" id="demos">
         <div class="container section">
-          <h2>Policy Learning for Loco-Manipulation</h2>
-          <p class="section-lead">For tasks that combine walking and object manipulation, we optimize command labels from recorded SONIC motion for SONIC or HEFT. Compare original commands, TTCO commands, and recorded robot states.</p>
+          <h2>Optimized Commands Enable Demonstration Reuse</h2>
+          <p class="section-lead">TTCO generates action labels offline from recorded robot motion without requiring the original teleoperation commands. These labels train high-level policies for walking and object manipulation. Re-optimizing the labels for a new BFM lets us reuse the same demonstrations.</p>
           <div class="demo-controls">
             <div aria-label="Choose a real-robot task" class="task-picker" role="group">
               <button aria-pressed="true" data-task="1" type="button">Cup in basket</button>
@@ -245,7 +245,7 @@
               <button aria-pressed="false" data-task="4" type="button">Bottle in drawer</button>
             </div>
             <div aria-label="Choose the target behavior foundation model" class="model-picker" role="group">
-              <span>Target model</span>
+              <span>Execution BFM</span>
               <button aria-pressed="true" data-model="sonic" type="button">SONIC</button>
               <button aria-pressed="false" data-model="heft" type="button">HEFT</button>
             </div>
@@ -261,7 +261,7 @@
               <video aria-label="Cup in basket: SONIC policy trained on optimized commands" controls="" data-label="ours" playsinline="" poster="assets/images/task-1-sonic-ours.webp" preload="none"><source src="assets/videos/task-1-sonic-ours.mp4" type="video/mp4"/></video>
             </figure>
             <figure class="comparison">
-              <h3>Robot states</h3>
+              <h3>Recorded robot states</h3>
               <video aria-label="Cup in basket: SONIC policy trained on robot-state labels" controls="" data-label="state" playsinline="" poster="assets/images/task-1-sonic-state.webp" preload="none"><source src="assets/videos/task-1-sonic-state.mp4" type="video/mp4"/></video>
               <p class="missing-clip" hidden="">Demo clip not provided.<span>The success rate is reported in the table below.</span></p>
             </figure>
@@ -274,7 +274,7 @@
           <details class="real-results data-details">
             <summary>Real-robot success rates<span aria-hidden="true">+</span></summary>
             <div class="details-body">
-              <p>60 evaluation rollouts per task and label source. Values are percentages.</p>
+              <p>We fine-tune GR00T N1.7 on SONIC demonstrations of four real-robot tasks. For each target BFM, observations and hand labels stay fixed while body-action labels change. Each task and label source is evaluated over 60 rollouts. Values are percentages.</p>
               <div class="table-scroll">
                 <table id="real-results">
                   <caption id="results-caption">SONIC demonstrations → SONIC execution</caption>
@@ -320,7 +320,7 @@
                   </tbody>
                 </table>
               </div>
-              <p class="small-note" id="result-note">With SONIC as the target, optimized labels reach 64.2% mean success. Original-command labels reach 60.4%; robot-state labels reach 2.5%.</p>
+              <p class="small-note" id="result-note">Policies trained on TTCO labels reach 64.2% mean success with SONIC, compared with 60.4% for original-command labels and 2.5% for robot-state labels.</p>
             </div>
           </details>
           <p aria-live="polite" class="sr-only" id="demo-announcement" role="status"></p>
