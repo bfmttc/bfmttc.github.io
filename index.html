@@ -65,7 +65,7 @@
           <details class="video-chapters">
             <summary><span class="video-label">Project video<span>3:59 · English narration &amp; captions</span></span><span class="chapter-toggle">Chapters<span aria-hidden="true">+</span></span></summary>
             <nav aria-label="Video chapters" class="chapters">
-              <button data-time="5" type="button"><span>00:05</span>The execution gap</button>
+              <button data-time="5" type="button"><span>00:05</span>The command–execution gap</button>
               <button data-time="16" type="button"><span>00:16</span>Command optimization</button>
               <button data-time="59" type="button"><span>00:59</span>Compute allocation</button>
               <button data-time="89" type="button"><span>01:29</span>Demonstration reuse</button>
@@ -76,8 +76,17 @@
         <p class="hero-summary">We optimize motion commands at test time to improve execution, without retraining the behavior foundation model.</p>
       </section>
       <div class="section-band">
+        <section aria-labelledby="gap-title" class="container section" id="gap">
+          <h2 id="gap-title">The command–execution gap</h2>
+          <p class="section-lead">A behavior foundation model (BFM) maps motion commands to robot actions. Even when the command matches the reference motion, execution can drift in position or miss intended contacts. This difference is the command–execution gap.</p>
+          <figure class="gap-figure">
+            <a aria-label="Open the command-execution comparison at full size" href="assets/images/command-execution-gap.webp" rel="noopener" target="_blank"><img alt="The same reference motion is sent to a fixed behavior foundation model and robot dynamics. Using the reference as the command leaves errors in left sidestep and backward walking. Adjusted commands produce execution closer to the same reference." height="728" loading="lazy" src="assets/images/command-execution-gap.webp" width="1800"/></a>
+            <figcaption>Blue: reference · Orange: command · Gray: execution. Command changes are exaggerated for illustration.</figcaption>
+          </figure>
+          <p class="gap-insight">We keep the reference motion and BFM fixed. We search for a different command that brings execution closer to the reference.</p>
+        </section>
         <section class="container section" id="method">
-          <h2>Test-Time Command Optimization</h2>
+          <h2>Test-Time Command Optimization (TTCO)</h2>
           <p class="section-lead">TTCO searches for commands that follow the reference more closely. Candidates are evaluated in parallel simulations of the fixed behavior foundation model and robot dynamics.</p>
           <figure class="method-figure">
             <a aria-label="Open figure at full size" href="assets/images/method.webp" rel="noopener" target="_blank"><img alt="TTCO samples candidate commands, evaluates parallel rollouts through a frozen BFM and physics simulator, updates the proposal from costs, and executes the best command segment before replanning." height="687" loading="lazy" src="assets/images/method.webp" width="1584"/></a>

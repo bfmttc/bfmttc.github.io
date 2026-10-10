@@ -25,6 +25,7 @@ node scripts/preview.mjs
 | 网页内容 | 本地来源 |
 | --- | --- |
 | 研究说明与跟踪、计算指标 | `Overleaf-BFM-TTS-arxiv/sections/abstract.tex`、`sections/experiments.tex`、`sections/method.tex` |
+| 指令与实际执行差距的说明及对比图 | `Overleaf-BFM-TTS-arxiv/sections/introduction.tex`、`sections/method.tex`、`figures/figure1_command_execution_evidence.pdf` |
 | 方法图 | `Overleaf-BFM-TTS-arxiv/figures/bfm-test-time-command-optimization.pdf` |
 | 实机跟踪图 | `Overleaf-BFM-TTS-arxiv/figures/real_tracking_qualitative_no_legend.pdf` |
 | 计算策略图 | `Overleaf-BFM-TTS-arxiv/figures/compute_strategy.pdf` |
