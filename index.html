@@ -35,7 +35,7 @@
 
 <h1 id="paper-title"><span>Test-Time Compute</span> for Humanoid<br class="desktop-break"/> Behavior Foundation Models</h1>
 
-<div aria-label="Authors" class="authors"><span>Weiji Xie<sup>1,2,†</sup></span><span>Junsong WU<sup>1,2,†</sup></span><span>Zibo Zhou<sup>1,2</sup></span><span>Yueru Chen<sup>1,2</sup></span><span>Xingyi Wang<sup>3</sup></span><span>Zhenhua Xiong<sup>2</sup></span><span>Weinan Zhang<sup>2</sup></span><span>Chenjia Bai<sup>1,4,*</sup></span></div>
+<div aria-label="Authors" class="authors"><span>Weiji Xie<sup>1,2,†</sup></span><span>Junsong Wu<sup>1,2,†</sup></span><span>Zibo Zhou<sup>1,2</sup></span><span>Yueru Chen<sup>1,2</sup></span><span>Xingyi Wang<sup>3</sup></span><span>Zhenhua Xiong<sup>2</sup></span><span>Weinan Zhang<sup>2</sup></span><span>Chenjia Bai<sup>1,4,*</sup></span></div>
 <div aria-label="Affiliations" class="affiliations"><span><sup>1</sup> Institute of Artificial Intelligence (TeleAI), China Telecom</span><span><sup>2</sup> Shanghai Jiaotong University</span><span><sup>3</sup> Zhejiang University</span><span><sup>4</sup> Gamma Robotics</span></div>
 <p class="contributions">† Equal contribution <span>·</span> * Corresponding author</p>
 <div aria-label="Project resources" class="resource-links">
@@ -56,7 +56,7 @@
 </section>
 
 <div class="section-band"><section class="container section" id="method">
-<h2>Test-Time Command Optimization</h2><p class="section-lead">A behavior foundation model (BFM) turns motion commands into robot actions. The executed motion can differ from the reference. TTCO searches for better commands through parallel simulations of the fixed BFM and robot dynamics.</p>
+<h2>Test-Time Command Optimization (TTCO)</h2><p class="section-lead">A behavior foundation model (BFM) turns motion commands into robot actions. The executed motion can differ from the reference. TTCO searches for better commands through parallel simulations of the fixed BFM and robot dynamics.</p>
 <figure class="method-figure">
 <a aria-label="Open figure at full size" href="assets/images/method.webp" rel="noopener" target="_blank"><img alt="TTCO samples candidate commands, evaluates parallel rollouts through a frozen BFM and physics simulator, updates the proposal from costs, and executes the best command segment before replanning." height="687" loading="lazy" src="assets/images/method.webp" width="1584"/></a>
 
