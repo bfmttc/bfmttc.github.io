@@ -11,8 +11,10 @@
 在仓库目录执行以下命令，然后打开 `http://127.0.0.1:8765/`：
 
 ```bash
-python -m http.server 8765 --bind 127.0.0.1
+node scripts/preview.mjs
 ```
+
+预览程序仅使用 Node.js 自带功能，支持视频按章节跳转，不需要安装依赖。网站在 GitHub Pages 上运行时不需要这个程序。
 
 `site.js` 开头的 `resourceLinks` 集中保存 Paper、arXiv 和 Code 的地址。三项当前均为空字符串。地址为空时，页面不生成可点击链接。补充地址时必须使用 HTTPS。
 
