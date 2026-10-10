@@ -73,144 +73,148 @@
             </nav>
           </details>
         </div>
-        <p class="hero-summary">Test-Time Command Optimization (TTCO) improves humanoid motion execution without retraining the behavior foundation model.</p>
+        <p class="hero-summary">Additional test-time compute can improve motion execution without retraining the humanoid behavior foundation model.</p>
       </section>
       <div class="section-band">
         <section aria-labelledby="gap-title" class="container section" id="gap">
-          <h2 id="gap-title">The Gap between Desired and Executed Motion</h2>
-          <p class="section-lead">A humanoid behavior foundation model (BFM) maps motion commands to robot actions. Using the desired motion as the command can still leave body-position errors or missed hand and foot contacts. We call this difference the command–execution gap.</p>
+          <h2 id="gap-title">The Command–Execution Gap</h2>
+          <p class="section-lead">Humanoid behavior foundation models (BFMs) can execute diverse motions, but loco-manipulation—walking and manipulating objects—demands high whole-body positional accuracy. Current BFMs show systematic deviations between desired and executed motions: the body drifts from its intended global position, or hands and feet miss intended contacts. This is the command–execution gap.</p>
           <figure class="gap-figure">
             <a aria-label="Open the command-execution comparison at full size" href="assets/images/command-execution-gap.webp" rel="noopener" target="_blank"><img alt="The same reference motion is sent to a fixed behavior foundation model and robot dynamics. Using the reference as the command leaves errors in left sidestep and backward walking. Adjusted commands produce execution closer to the same reference." height="728" loading="lazy" src="assets/images/command-execution-gap.webp" width="1800"/></a>
             <figcaption>Blue: reference · Orange: command · Gray: execution. Command changes are exaggerated for illustration.</figcaption>
           </figure>
-          <p class="gap-insight">The command that produces more accurate execution need not match the desired motion. We adapt the command while keeping the reference motion and BFM fixed.</p>
-        </section>
-        <section class="container section" id="method">
-          <h2>TTCO Adapts Commands to the BFM</h2>
-          <p class="section-lead">TTCO samples alternative motion commands and evaluates them in parallel closed-loop simulations of the fixed BFM and robot dynamics. Tracking and regularization costs guide the search toward commands that bring execution closer to the reference.</p>
-          <figure class="method-figure">
-            <a aria-label="Open figure at full size" href="assets/images/method.webp" rel="noopener" target="_blank"><img alt="TTCO samples candidate commands, evaluates parallel rollouts through a frozen BFM and physics simulator, updates the proposal from costs, and executes the best command segment before replanning." height="687" loading="lazy" src="assets/images/method.webp" width="1584"/></a>
-          </figure>
-          <ol class="method-steps">
-            <li><span aria-hidden="true">1</span>Sample commands</li>
-            <li><span aria-hidden="true">2</span>Simulate execution</li>
-            <li><span aria-hidden="true">3</span>Refine the proposal</li>
-            <li><span aria-hidden="true">4</span>Execute and replan</li>
-          </ol>
-          <p class="section-caption">The simulator executes the first segment of the lowest-cost candidate, then replans. For policy learning, command labels are generated offline.</p>
+          <p class="gap-insight">The desired motion need not be supplied directly as the command. Adapting the input to the specific BFM can bring execution closer to the same desired motion.</p>
         </section>
       </div>
-      <section class="results" id="results">
-        <div class="container section">
-          <h2>TTCO Improves Tracking Precision</h2>
-          <p class="section-lead">On 12,273 AMASS reference motions per BFM, optimized commands reduce mean global body-position error by 79.1–84.2% across HEFT, SONIC, and TWIST2 in simulation. The comparison uses the same pretrained models without further training.</p>
-          <figure class="tracking-showcase">
-            <video aria-label="Nominal and optimized commands for left sidestep and backward walking" class="teaser" controls="" id="teaser" loop="" muted="" playsinline="" poster="assets/images/tracking-poster.webp" preload="metadata"><source src="assets/videos/tracking.mp4" type="video/mp4"/>Your browser cannot play this video.<a href="assets/videos/tracking.mp4">Open the tracking video.</a></video>
-            <figcaption>Left sidestep and backward walking. The real robot replays commands optimized in simulation without replanning.<br/>Blue outlines mark the reference motion; all clips play at 1× speed.</figcaption>
-          </figure>
-          <div class="benchmark">
-            <h3>Mean global body-position error</h3>
-            <div class="legend">
-              <span><i class="nominal-swatch"></i>Nominal commands</span>
-              <span><i class="optimized-swatch"></i>Optimized commands</span>
-            </div>
-            <div class="benchmark-row">
-              <strong>HEFT</strong>
-              <div class="bar-pair">
-                <div class="bar-track">
-                  <span class="bar nominal" style="width:22.58%"></span>
-                  <span>27.1</span>
-                </div>
-                <div class="bar-track">
-                  <span class="bar optimized" style="width:4.75%"></span>
-                  <span>5.7</span>
-                </div>
-              </div>
-            </div>
-            <div class="benchmark-row">
-              <strong>SONIC</strong>
-              <div class="bar-pair">
-                <div class="bar-track">
-                  <span class="bar nominal" style="width:51.25%"></span>
-                  <span>61.5</span>
-                </div>
-                <div class="bar-track">
-                  <span class="bar optimized" style="width:10.58%"></span>
-                  <span>12.7</span>
-                </div>
-              </div>
-            </div>
-            <div class="benchmark-row">
-              <strong>TWIST2</strong>
-              <div class="bar-pair">
-                <div class="bar-track">
-                  <span class="bar nominal" style="width:91.25%"></span>
-                  <span>109.5</span>
-                </div>
-                <div class="bar-track">
-                  <span class="bar optimized" style="width:14.42%"></span>
-                  <span>17.3</span>
-                </div>
-              </div>
-            </div>
-            <div aria-hidden="true" class="chart-axis">
-              <span>0</span>
-              <span>30</span>
-              <span>60</span>
-              <span>90</span>
-              <span>120 cm</span>
-            </div>
-            <p class="section-caption">Simulation means, in centimeters. Lower is better. All bars use the same scale.</p>
+      <section aria-labelledby="method-title" id="method">
+        <div class="section-band">
+          <div class="container section">
+            <h2 id="method-title">Test-Time Command Optimization</h2>
+            <p class="section-lead">We introduce Test-Time Command Optimization (TTCO) to improve motion-tracking fidelity in existing humanoid BFMs without further training. TTCO adapts the input command to the specific BFM through sampling-based optimization in closed-loop simulations of the BFM and robot dynamics.</p>
+            <figure class="method-figure">
+              <a aria-label="Open figure at full size" href="assets/images/method.webp" rel="noopener" target="_blank"><img alt="TTCO samples candidate commands, evaluates parallel rollouts through a frozen BFM and physics simulator, updates the proposal from costs, and executes the best command segment before replanning." height="687" loading="lazy" src="assets/images/method.webp" width="1584"/></a>
+            </figure>
+            <ol class="method-steps">
+              <li><span aria-hidden="true">1</span>Sample commands</li>
+              <li><span aria-hidden="true">2</span>Simulate execution</li>
+              <li><span aria-hidden="true">3</span>Refine the proposal</li>
+              <li><span aria-hidden="true">4</span>Execute and replan</li>
+            </ol>
+            <p class="section-caption">The simulator executes the first segment of the lowest-cost candidate, then replans. For policy learning, command labels are generated offline.</p>
           </div>
-          <details class="data-details">
-            <summary>Measurements and hardware frames<span aria-hidden="true">+</span></summary>
-            <div class="details-body">
-              <p>These simulation results use compute budget ratio K = 640. Joint acceleration increases for all three BFMs, showing a trade-off between tracking precision and motion smoothness.</p>
-              <div class="table-scroll">
-                <table>
-                  <caption>AMASS means. Each pair reports nominal → optimized performance.</caption>
-                  <thead>
-                    <tr>
-                      <th scope="col">BFM</th>
-                      <th scope="col">Body-position error (cm)</th>
-                      <th scope="col">Root-position error (cm)</th>
-                      <th scope="col">Joint acceleration (rad/s²)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">HEFT</th>
-                      <td>27.1 → 5.7</td>
-                      <td>26.4 → 4.8</td>
-                      <td>10.104 → 17.246</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">SONIC</th>
-                      <td>61.5 → 12.7</td>
-                      <td>60.9 → 11.7</td>
-                      <td>8.832 → 11.999</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">TWIST2</th>
-                      <td>109.5 → 17.3</td>
-                      <td>107.9 → 16.4</td>
-                      <td>43.280 → 51.574</td>
-                    </tr>
-                  </tbody>
-                </table>
+        </div>
+        <div class="results" id="results">
+          <div class="container section">
+            <h3 class="result-heading">Motion-Tracking Fidelity across Three BFMs</h3>
+            <p class="section-lead">We evaluate TTCO on 12,273 AMASS reference motions using HEFT, SONIC, and TWIST2. Compared with directly using the reference motion as the command, TTCO reduces mean global body-position error by 79–84% across these three BFMs in simulation.</p>
+            <figure class="tracking-showcase">
+              <video aria-label="Nominal and optimized commands for left sidestep and backward walking" class="teaser" controls="" id="teaser" loop="" muted="" playsinline="" poster="assets/images/tracking-poster.webp" preload="metadata"><source src="assets/videos/tracking.mp4" type="video/mp4"/>Your browser cannot play this video.<a href="assets/videos/tracking.mp4">Open the tracking video.</a></video>
+              <figcaption>Left sidestep and backward walking. The real robot replays commands optimized in simulation without replanning.<br/>Blue outlines mark the reference motion; all clips play at 1× speed.</figcaption>
+            </figure>
+            <div class="benchmark">
+              <h3>Mean global body-position error</h3>
+              <div class="legend">
+                <span><i class="nominal-swatch"></i>Nominal commands</span>
+                <span><i class="optimized-swatch"></i>Optimized commands</span>
               </div>
-              <figure class="hardware-figure">
-                <a aria-label="Open figure at full size" href="assets/images/real-tracking.webp" rel="noopener" target="_blank"><img alt="Real-robot sequences: left sidestep and backward walking, with nominal commands above and optimized commands below. Blue reference outlines show that the final displayed positions are closer after optimization." height="1136" loading="lazy" src="assets/images/real-tracking.webp" width="1872"/></a>
-                <figcaption>Simulation-optimized commands are replayed on the real robot without replanning.<br/>Blue outlines mark the reference motion.</figcaption>
-              </figure>
+              <div class="benchmark-row">
+                <strong>HEFT</strong>
+                <div class="bar-pair">
+                  <div class="bar-track">
+                    <span class="bar nominal" style="width:22.58%"></span>
+                    <span>27.1</span>
+                  </div>
+                  <div class="bar-track">
+                    <span class="bar optimized" style="width:4.75%"></span>
+                    <span>5.7</span>
+                  </div>
+                </div>
+              </div>
+              <div class="benchmark-row">
+                <strong>SONIC</strong>
+                <div class="bar-pair">
+                  <div class="bar-track">
+                    <span class="bar nominal" style="width:51.25%"></span>
+                    <span>61.5</span>
+                  </div>
+                  <div class="bar-track">
+                    <span class="bar optimized" style="width:10.58%"></span>
+                    <span>12.7</span>
+                  </div>
+                </div>
+              </div>
+              <div class="benchmark-row">
+                <strong>TWIST2</strong>
+                <div class="bar-pair">
+                  <div class="bar-track">
+                    <span class="bar nominal" style="width:91.25%"></span>
+                    <span>109.5</span>
+                  </div>
+                  <div class="bar-track">
+                    <span class="bar optimized" style="width:14.42%"></span>
+                    <span>17.3</span>
+                  </div>
+                </div>
+              </div>
+              <div aria-hidden="true" class="chart-axis">
+                <span>0</span>
+                <span>30</span>
+                <span>60</span>
+                <span>90</span>
+                <span>120 cm</span>
+              </div>
+              <p class="section-caption">Simulation means, in centimeters. Lower is better. All bars use the same scale.</p>
             </div>
-          </details>
+            <details class="data-details">
+              <summary>Measurements and hardware frames<span aria-hidden="true">+</span></summary>
+              <div class="details-body">
+                <p>These simulation results use compute budget ratio K = 640. Joint acceleration increases for all three BFMs, showing a trade-off between tracking precision and motion smoothness.</p>
+                <div class="table-scroll">
+                  <table>
+                    <caption>AMASS means. Each pair reports nominal → optimized performance.</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">BFM</th>
+                        <th scope="col">Body-position error (cm)</th>
+                        <th scope="col">Root-position error (cm)</th>
+                        <th scope="col">Joint acceleration (rad/s²)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">HEFT</th>
+                        <td>27.1 → 5.7</td>
+                        <td>26.4 → 4.8</td>
+                        <td>10.104 → 17.246</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">SONIC</th>
+                        <td>61.5 → 12.7</td>
+                        <td>60.9 → 11.7</td>
+                        <td>8.832 → 11.999</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">TWIST2</th>
+                        <td>109.5 → 17.3</td>
+                        <td>107.9 → 16.4</td>
+                        <td>43.280 → 51.574</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <figure class="hardware-figure">
+                  <a aria-label="Open figure at full size" href="assets/images/real-tracking.webp" rel="noopener" target="_blank"><img alt="Real-robot sequences: left sidestep and backward walking, with nominal commands above and optimized commands below. Blue reference outlines show that the final displayed positions are closer after optimization." height="1136" loading="lazy" src="assets/images/real-tracking.webp" width="1872"/></a>
+                  <figcaption>Simulation-optimized commands are replayed on the real robot without replanning.<br/>Blue outlines mark the reference motion.</figcaption>
+                </figure>
+              </div>
+            </details>
+          </div>
         </div>
       </section>
       <section class="section-band" id="compute">
         <div class="container section">
-          <h2>A Cost Model Guides Compute Allocation</h2>
-          <p class="section-lead">Tracking gains depend on how compute is split across command candidates, search iterations, rollout length, and replanning. We fit a surrogate cost model to measured costs and use its predictions to select an approximate compute-optimal allocation at each budget.</p>
+          <h2>Test-Time Compute Scaling</h2>
+          <p class="section-lead">We analyze test-time compute scaling and derive an approximate compute-optimal allocation strategy. Fitted to limited measurements, our surrogate cost model captures the allocation trade-offs. The resulting strategy sustains performance gains as compute increases and generalizes across motions and BFMs.</p>
           <figure class="compute-figure">
             <a aria-label="Open figure at full size" href="assets/images/compute-strategy.webp" rel="noopener" target="_blank"><img alt="On SONIC fitting motions, the proposed strategy follows the empirical optimum as the compute budget grows from 256 to 8192." height="533" loading="lazy" src="assets/images/compute-strategy.webp" width="879"/></a>
           </figure>
@@ -235,8 +239,8 @@
       </section>
       <section class="demos" id="demos">
         <div class="container section">
-          <h2>Optimized Commands Enable Demonstration Reuse</h2>
-          <p class="section-lead">TTCO generates action labels offline from recorded robot motion without requiring the original teleoperation commands. These labels train high-level policies for walking and object manipulation. Re-optimizing the labels for a new BFM lets us reuse the same demonstrations.</p>
+          <h2>High-Level Policy Learning and Demonstration Reuse</h2>
+          <p class="section-lead">Because of the command–execution gap, recorded robot trajectories may not directly serve as action labels. We apply TTCO offline to generate BFM-specific labels from those trajectories, without requiring the original teleoperation body-motion commands. These labels train high-level loco-manipulation policies and support demonstration reuse across BFMs.</p>
           <div class="demo-controls">
             <div aria-label="Choose a real-robot task" class="task-picker" role="group">
               <button aria-pressed="true" data-task="1" type="button">Cup in basket</button>
