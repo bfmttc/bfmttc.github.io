@@ -28,6 +28,7 @@ const successRates = {
   sonic: [[55.0, 55.0, 0.0], [83.3, 91.7, 10.0], [53.3, 50.0, 0.0], [50.0, 60.0, 0.0], [60.4, 64.2, 2.5]],
   heft: [[0.0, 40.0, 13.3], [6.7, 55.0, 20.0], [0.0, 50.0, 8.3], [0.0, 50.0, 6.7], [1.7, 48.8, 12.1]],
 };
+const unavailableClips = new Set(['task-1-heft-state']);
 
 let selectedTask = 1;
 let selectedModel = 'sonic';
@@ -41,8 +42,17 @@ function updateDemonstrations() {
   for (const video of comparisons) {
     video.pause();
     const filename = `task-${selectedTask}-${selectedModel}-${video.dataset.label}`;
-    video.poster = `assets/images/${filename}.webp`;
-    video.querySelector('source').src = `assets/videos/${filename}.mp4`;
+    const unavailable = unavailableClips.has(filename);
+    video.hidden = unavailable;
+    const placeholder = video.parentElement.querySelector('.missing-clip');
+    if (placeholder) placeholder.hidden = !unavailable;
+    if (unavailable) {
+      video.removeAttribute('poster');
+      video.querySelector('source').removeAttribute('src');
+    } else {
+      video.poster = `assets/images/${filename}.webp`;
+      video.querySelector('source').src = `assets/videos/${filename}.mp4`;
+    }
     video.setAttribute('aria-label', `${tasks[selectedTask]}: ${selectedModel.toUpperCase()} policy, ${video.dataset.label} labels`);
     video.load();
   }
@@ -85,8 +95,9 @@ comparisonButton.addEventListener('click', async () => {
     for (const video of comparisons) video.pause();
     return;
   }
-  for (const video of comparisons) video.currentTime = 0;
-  const results = await Promise.allSettled(comparisons.map(video => video.play()));
+  const availableVideos = comparisons.filter(video => !video.hidden);
+  for (const video of availableVideos) video.currentTime = 0;
+  const results = await Promise.allSettled(availableVideos.map(video => video.play()));
   if (results.some(result => result.status === 'rejected')) {
     for (const video of comparisons) video.pause();
     document.getElementById('demo-announcement').textContent = 'Playback could not start. Use the individual video controls to play the clips.';
