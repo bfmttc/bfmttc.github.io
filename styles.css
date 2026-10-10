@@ -161,7 +161,8 @@ tr[data-result-task].selected { background: #efeee8; }
   .nav-shell { min-height: 56px; }
   .wordmark { font-size: 15px; }
   .wordmark span { margin-inline: 4px; }
-  .site-header nav { gap: 15px; font-size: 14px; }
+  .site-header nav { gap: 22px; font-size: 15px; }
+  .site-header nav a[href="#method"], .site-header nav a[href="#results"] { display: none; }
   .hero { padding-top: 31px; }
   h1 { font-size: clamp(33px, 8vw, 45px); line-height: 1.13; letter-spacing: -.035em; }
   .authors { grid-template-columns: 1fr 1fr; margin: 23px auto 15px; font-size: 16px; gap: 7px 13px; }
