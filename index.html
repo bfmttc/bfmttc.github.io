@@ -77,7 +77,7 @@
       </section>
       <div class="section-band">
         <section aria-labelledby="gap-title" class="container section" id="gap">
-          <h2 id="gap-title">The command–execution gap</h2>
+          <h2 id="gap-title">Command–Execution Gap</h2>
           <p class="section-lead">A behavior foundation model (BFM) maps motion commands to robot actions. Even when the command matches the reference motion, execution can drift in position or miss intended contacts. This difference is the command–execution gap.</p>
           <figure class="gap-figure">
             <a aria-label="Open the command-execution comparison at full size" href="assets/images/command-execution-gap.webp" rel="noopener" target="_blank"><img alt="The same reference motion is sent to a fixed behavior foundation model and robot dynamics. Using the reference as the command leaves errors in left sidestep and backward walking. Adjusted commands produce execution closer to the same reference." height="728" loading="lazy" src="assets/images/command-execution-gap.webp" width="1800"/></a>
@@ -86,8 +86,8 @@
           <p class="gap-insight">We keep the reference motion and BFM fixed. We search for a different command that brings execution closer to the reference.</p>
         </section>
         <section class="container section" id="method">
-          <h2>Test-Time Command Optimization (TTCO)</h2>
-          <p class="section-lead">TTCO searches for commands that follow the reference more closely. Candidates are evaluated in parallel simulations of the fixed behavior foundation model and robot dynamics.</p>
+          <h2>Test-Time Command Optimization</h2>
+          <p class="section-lead">Test-Time Command Optimization (TTCO) searches for commands whose execution follows the reference more closely. Candidates are evaluated in parallel simulations of the fixed behavior foundation model and robot dynamics.</p>
           <figure class="method-figure">
             <a aria-label="Open figure at full size" href="assets/images/method.webp" rel="noopener" target="_blank"><img alt="TTCO samples candidate commands, evaluates parallel rollouts through a frozen BFM and physics simulator, updates the proposal from costs, and executes the best command segment before replanning." height="687" loading="lazy" src="assets/images/method.webp" width="1584"/></a>
           </figure>
@@ -102,7 +102,7 @@
       </div>
       <section class="results" id="results">
         <div class="container section">
-          <h2>More accurate motion tracking</h2>
+          <h2>Motion-Tracking Precision</h2>
           <p class="section-lead">Across HEFT, SONIC, and TWIST2, mean global body-position error falls by 79.1–84.2% in simulation. Each model is evaluated on 12,273 AMASS motions.</p>
           <figure class="tracking-showcase">
             <video aria-label="Nominal and optimized commands for left sidestep and backward walking" class="teaser" controls="" id="teaser" loop="" muted="" playsinline="" poster="assets/images/tracking-poster.webp" preload="metadata"><source src="assets/videos/tracking.mp4" type="video/mp4"/>Your browser cannot play this video.<a href="assets/videos/tracking.mp4">Open the tracking video.</a></video>
@@ -209,7 +209,7 @@
       </section>
       <section class="section-band" id="compute">
         <div class="container section">
-          <h2>How we allocate compute matters</h2>
+          <h2>Scaling Test-Time Compute</h2>
           <p class="section-lead">A fitted cost model selects how many commands to sample, how far to simulate, and when to replan. More compute then produces lower tracking cost.</p>
           <figure class="compute-figure">
             <a aria-label="Open figure at full size" href="assets/images/compute-strategy.webp" rel="noopener" target="_blank"><img alt="On SONIC fitting motions, the proposed strategy follows the empirical optimum as the compute budget grows from 256 to 8192." height="533" loading="lazy" src="assets/images/compute-strategy.webp" width="879"/></a>
@@ -235,8 +235,8 @@
       </section>
       <section class="demos" id="demos">
         <div class="container section">
-          <h2>Reuse demonstrations across models</h2>
-          <p class="section-lead">Use recorded SONIC motion to optimize training labels for SONIC or HEFT. Compare original commands, TTCO commands, and recorded robot states.</p>
+          <h2>Policy Learning for Loco-Manipulation</h2>
+          <p class="section-lead">For tasks that combine walking and object manipulation, we optimize command labels from recorded SONIC motion for SONIC or HEFT. Compare original commands, TTCO commands, and recorded robot states.</p>
           <div class="demo-controls">
             <div aria-label="Choose a real-robot task" class="task-picker" role="group">
               <button aria-pressed="true" data-task="1" type="button">Cup in basket</button>
