@@ -11,7 +11,6 @@ for (const link of document.querySelectorAll('[data-resource]')) {
     link.href = parsed.href;
     link.removeAttribute('aria-disabled');
     link.removeAttribute('title');
-    link.querySelector('.pending').remove();
   }
 }
 
