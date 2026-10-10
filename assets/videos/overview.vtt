@@ -1,0 +1,88 @@
+WEBVTT
+
+00:00:00.400 --> 00:00:03.920
+Test-Time Compute for Humanoid Behavior Foundation Models.
+
+00:00:05.700 --> 00:00:09.391
+Even when the command matches the reference, execution can differ.
+
+00:00:11.900 --> 00:00:14.247
+Can optimizing the command close this gap?
+
+00:00:16.400 --> 00:00:19.749
+We sample commands and evaluate their rollouts in parallel.
+
+00:00:20.100 --> 00:00:22.959
+Lower-cost candidates guide the next proposal.
+
+00:00:24.250 --> 00:00:29.199
+After I iterations, we execute E steps of the best command found, then replan.
+
+00:00:35.150 --> 00:00:41.550
+Optimizing the commands brings execution closer to the reference, in simulation and on the real robot.
+
+00:00:45.900 --> 00:00:52.577
+The same improvement appears in backward walking, where optimized commands better recover the intended displacement.
+
+00:00:55.000 --> 00:00:57.133
+Better tracking, without further training.
+
+00:00:59.150 --> 00:01:02.435
+More compute can improve tracking. How should we allocate it?
+
+00:01:02.900 --> 00:01:07.807
+Together, N, I, H, and E define a configuration and its compute budget.
+
+00:01:10.300 --> 00:01:14.929
+Our strategy stays close to the empirical optimum, with four percent mean regret.
+
+00:01:16.300 --> 00:01:19.649
+With more compute, measured cost falls by fifty-eight percent.
+
+00:01:22.150 --> 00:01:27.142
+Used unchanged, the strategy generalizes to new motions and BFMs.
+
+00:01:29.150 --> 00:01:32.585
+A high-level policy learns commands from demonstrations.
+
+00:01:32.800 --> 00:01:38.432
+But the command-execution gap means recorded motion cannot directly serve as command labels.
+
+00:01:42.300 --> 00:01:46.737
+Original command labels train a high-level policy that runs with SONIC.
+
+00:01:47.450 --> 00:01:54.469
+We optimize commands for SONIC using recorded motion as the reference. These commands become the training labels.
+
+00:01:57.250 --> 00:02:03.607
+With SONIC, optimized labels approach original-command performance and outperform robot-state labels.
+
+00:02:04.300 --> 00:02:08.545
+Our method also enables demonstration reuse across BFMs.
+
+00:02:09.000 --> 00:02:13.181
+Using the same SONIC demonstrations, we re-optimize commands for HEFT.
+
+00:02:15.800 --> 00:02:20.621
+We evaluate the learned policies on four real-world loco-manipulation tasks.
+
+00:02:21.350 --> 00:02:25.361
+Execution uses SONIC in the top row and HEFT in the bottom row.
+
+00:02:26.100 --> 00:02:28.767
+The first task is to place a cup in the basket.
+
+00:02:38.300 --> 00:02:40.476
+Next, place the parcel bag on the shelf.
+
+00:03:06.800 --> 00:03:08.741
+Now, place the basket on the shelf.
+
+00:03:29.800 --> 00:03:31.784
+Finally, put the bottle in the drawer.
+
+00:03:46.300 --> 00:03:54.215
+To conclude, we improve tracking, make better use of test-time compute, and reuse demonstrations to train high-level policies.
+
+00:03:55.600 --> 00:03:56.816
+Thanks for watching.
