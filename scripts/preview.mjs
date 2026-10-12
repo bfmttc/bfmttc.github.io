@@ -8,7 +8,7 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const types = new Map([
   ['.html', 'text/html; charset=utf-8'], ['.css', 'text/css; charset=utf-8'],
   ['.js', 'text/javascript; charset=utf-8'], ['.svg', 'image/svg+xml'],
-  ['.webp', 'image/webp'], ['.mp4', 'video/mp4'],
+  ['.png', 'image/png'], ['.webp', 'image/webp'], ['.mp4', 'video/mp4'],
   ['.vtt', 'text/vtt; charset=utf-8'], ['.woff2', 'font/woff2'],
 ]);
 
