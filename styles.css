@@ -35,9 +35,9 @@ h1 { max-width: 1060px; margin-inline: auto; font-family: Georgia, 'Times New Ro
 h1 > span { color: var(--accent); }
 .authors { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px 22px; max-width: 940px; margin: 26px auto 16px; font-size: 18px; }
 .authors > span { white-space: nowrap; }
-.affiliation-logos { display: flex; align-items: center; justify-content: center; gap: 48px; max-width: 740px; margin: 21px auto 15px; padding: 12px 22px; border-block: 1px solid var(--line); background: #fff; }
-.affiliation-logo { display: grid; place-items: center; flex: 0 0 76px; height: 76px; overflow: hidden; }
-.affiliation-logo img { width: 72px; height: 72px; object-fit: contain; }
+.affiliation-logos { display: flex; align-items: center; justify-content: center; gap: clamp(16px, 4.2vw, 48px); max-width: 740px; margin: 21px auto 15px; padding: 12px 22px; border-block: 1px solid var(--line); background: #fff; }
+.affiliation-logo { display: flex; align-items: center; justify-content: center; flex: 0 0 76px; height: 76px; overflow: hidden; }
+.affiliation-logo img { flex-shrink: 0; width: 72px; height: 72px; object-fit: contain; }
 .logo-teleai img { width: 64px; height: 64px; }
 .logo-zju img { width: 120px; height: 96px; }
 .logo-gamma { flex-basis: 176px; }
