@@ -1,19 +1,5 @@
 'use strict';
 
-// Add confirmed public addresses here. Empty strings keep the links inactive.
-const resourceLinks = { paper: '', arxiv: '', code: '' };
-
-for (const link of document.querySelectorAll('[data-resource]')) {
-  const address = resourceLinks[link.dataset.resource];
-  if (address !== '') {
-    const parsed = new URL(address);
-    if (parsed.protocol !== 'https:') throw new Error('Resource links must use HTTPS.');
-    link.href = parsed.href;
-    link.removeAttribute('aria-disabled');
-    link.removeAttribute('title');
-  }
-}
-
 const tasks = {
   1: 'Cup in basket',
   2: 'Parcel bag on shelf',

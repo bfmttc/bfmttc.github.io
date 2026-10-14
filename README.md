@@ -14,7 +14,7 @@ node scripts/preview.mjs
 
 预览程序仅使用 Node.js 自带功能，支持视频按章节跳转，不需要安装依赖。网站在 GitHub Pages 上运行时不需要这个程序。
 
-`site.js` 开头的 `resourceLinks` 集中保存 Paper、arXiv 和 Code 的地址。三项当前均为空字符串。地址为空时，页面不生成可点击链接。补充地址时必须使用 HTTPS。
+Paper、arXiv 和 Code 的地址集中写在 `index.html` 的资源链接区，使用 HTTPS。Paper 指向论文 PDF，arXiv 指向摘要页，Code 指向 `Gamma-Robot/bfm_ttc`。这三个链接无需 JavaScript 即可使用。
 
 ## 内容与素材来源
 
